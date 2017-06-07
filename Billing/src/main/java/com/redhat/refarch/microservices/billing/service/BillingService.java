@@ -62,8 +62,8 @@ public class BillingService {
         logInfo("Asked to refund credit card transaction2: ");
         Result result = new Result();
         result.setName("test");
-        result.setOrderNumber("123");
-        result.setCustomerId("33333");
+        result.setOrderNumber(new Long(123));
+        result.setCustomerId(new Long(33333));
         return result;
         
     }
