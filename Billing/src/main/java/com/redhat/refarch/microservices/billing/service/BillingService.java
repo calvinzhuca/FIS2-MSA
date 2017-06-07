@@ -58,8 +58,14 @@ public class BillingService {
         return result;
     }
 
-    public void refund(String transactionNumber) {
-        logInfo("Asked to refund credit card transaction in String: " + transactionNumber);
+    public Result refund(Transaction transactionNumber) {
+        logInfo("Asked to refund credit card transaction2: ");
+        Result result = new Result();
+        result.setName("test");
+        result.setOrderNumber("123");
+        result.setCustomerId("33333");
+        return result;
+        
     }
 
     private void logInfo(String message) {
