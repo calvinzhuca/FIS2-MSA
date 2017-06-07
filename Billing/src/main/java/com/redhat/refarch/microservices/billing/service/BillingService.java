@@ -58,8 +58,8 @@ public class BillingService {
         return result;
     }
 
-    public void refund(int transactionNumber) {
-        logInfo("Asked to refund credit card transaction: " + transactionNumber);
+    public void refund(String transactionNumber) {
+        logInfo("Asked to refund credit card transaction in String: " + transactionNumber);
     }
 
     private void logInfo(String message) {
