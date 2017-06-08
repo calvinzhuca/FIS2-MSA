@@ -21,14 +21,61 @@ import org.codehaus.jettison.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.StringWriter;
 import java.net.URISyntaxException;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+
+import org.apache.http.conn.ssl.SSLContextBuilder;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 
 public class RestClient {
+
+/*  
+public HttpClient createHttpClient_AcceptsUntrustedCerts() {
+    HttpClientBuilder b = HttpClientBuilder.create();
+ 
+    // setup a Trust Strategy that allows all certificates.
+    //
+    SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
+        public boolean isTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {
+            return true;
+        }
+    }).build();
+    b.setSslcontext( sslContext);
+ 
+    // don't check Hostnames, either.
+    //      -- use SSLConnectionSocketFactory.getDefaultHostnameVerifier(), if you don't want to weaken
+    HostnameVerifier hostnameVerifier = SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+ 
+    // here's the special part:
+    //      -- need to create an SSL Socket Factory, to use our weakened "trust strategy";
+    //      -- and create a Registry, to register it.
+    //
+    SSLConnectionSocketFactory sslSocketFactory = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
+    Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder.<ConnectionSocketFactory>create()
+            .register("http", PlainConnectionSocketFactory.getSocketFactory())
+            .register("https", sslSocketFactory)
+            .build();
+ 
+    // now, we create connection-manager using our Registry.
+    //      -- allows multi-threaded use
+    PoolingHttpClientConnectionManager connMgr = new PoolingHttpClientConnectionManager( socketFactoryRegistry);
+    b.setConnectionManager( connMgr);
+ 
+    // finally, build the HttpClient;
+    //      -- done!
+    HttpClient client = b.build();
+    return client;
+}
+*/
 
     public static void setProductsAttribute(HttpServletRequest request) {
         try {
@@ -66,20 +113,38 @@ public class RestClient {
     }
 
     public static List<Map<String, Object>> getFeaturedProducts() throws IOException, JSONException, URISyntaxException, HttpErrorException {
-        HttpClient client = new DefaultHttpClient();
-        URIBuilder uriBuilder = getUriBuilder("products");
-        uriBuilder.addParameter("featured", "");
-        HttpGet get = new HttpGet(uriBuilder.build());
-        logInfo("Executing " + get);
-        HttpResponse response = client.execute(get);
-        if (isError(response)) {
-            throw new HttpErrorException(response);
-        } else {
-            String responseString = EntityUtils.toString(response.getEntity());
-            JSONArray jsonArray = new JSONArray(responseString);
-            List<Map<String, Object>> products = Utils.getList(jsonArray);
-            return products;
+
+        try {
+            SSLContextBuilder builder = new SSLContextBuilder();
+            builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+            SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                    builder.build());
+            CloseableHttpClient client;
+            client = HttpClients.custom().setSSLSocketFactory(
+                    sslsf).build();
+            
+            //HttpClient client = new DefaultHttpClient();
+            URIBuilder uriBuilder = getUriBuilder("products");
+            uriBuilder.addParameter("featured", "");
+            HttpGet get = new HttpGet(uriBuilder.build());
+            logInfo("Executing " + get);
+            HttpResponse response = client.execute(get);
+            if (isError(response)) {
+                throw new HttpErrorException(response);
+            } else {
+                String responseString = EntityUtils.toString(response.getEntity());
+                JSONArray jsonArray = new JSONArray(responseString);
+                List<Map<String, Object>> products = Utils.getList(jsonArray);
+                return products;
+            }
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(RestClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (KeyStoreException ex) {
+            Logger.getLogger(RestClient.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (KeyManagementException ex) {
+            Logger.getLogger(RestClient.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return null;
     }
 
     public static void register(HttpServletRequest request) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
@@ -586,3 +651,4 @@ public class RestClient {
         }
     };
 }
+
