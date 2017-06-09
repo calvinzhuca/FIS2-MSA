@@ -9,6 +9,7 @@ import io.swagger.jaxrs.config.BeanConfig;
 import java.util.HashSet;
 import java.util.Set;
 import javax.annotation.Resource;
+import javax.ws.rs.core.Application;
 
 
 
@@ -16,7 +17,7 @@ import javax.annotation.Resource;
  *
  * @author czhu
  */
-public class SwaggerTestApplication extends SalesService {
+public class SwaggerTestApplication extends Application {
 
     public SwaggerTestApplication() {
         BeanConfig beanConfig = new BeanConfig();
@@ -28,7 +29,7 @@ public class SwaggerTestApplication extends SalesService {
         beanConfig.setScan(true);
     }
 
-//    @Override
+    @Override
     public Set<Class<?>> getClasses() {
         HashSet<Class<?>> set = new HashSet<Class<?>>();
 
