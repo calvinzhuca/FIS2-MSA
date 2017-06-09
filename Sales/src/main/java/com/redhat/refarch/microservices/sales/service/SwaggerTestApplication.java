@@ -23,9 +23,9 @@ public class SwaggerTestApplication extends Application {
         BeanConfig beanConfig = new BeanConfig();
         beanConfig.setVersion("1.0");
         beanConfig.setSchemes(new String[]{"http"});
-        beanConfig.setTitle("My API");
-        beanConfig.setBasePath("/TestSwagger");
-        beanConfig.setResourcePackage("com.haufe.demo.resources");
+        beanConfig.setTitle("Sales API");
+        beanConfig.setBasePath("/customers");
+        beanConfig.setResourcePackage("com.redhat.refarch.microservices.sales.service");
         beanConfig.setScan(true);
     }
 
@@ -33,7 +33,7 @@ public class SwaggerTestApplication extends Application {
     public Set<Class<?>> getClasses() {
         HashSet<Class<?>> set = new HashSet<Class<?>>();
 
-        set.add(Resource.class);
+        set.add(SalesService.class);
 
         set.add(io.swagger.jaxrs.listing.ApiListingResource.class);
         set.add(io.swagger.jaxrs.listing.SwaggerSerializers.class);
