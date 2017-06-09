@@ -8,8 +8,8 @@ package com.redhat.refarch.microservices.sales.service;
 import io.swagger.jaxrs.config.BeanConfig;
 import java.util.HashSet;
 import java.util.Set;
-import javax.annotation.Resource;
 import javax.ws.rs.core.Application;
+
 
 
 
@@ -24,7 +24,7 @@ public class SwaggerTestApplication extends Application {
         beanConfig.setVersion("1.0");
         beanConfig.setSchemes(new String[]{"http"});
         beanConfig.setTitle("Sales API");
-        beanConfig.setBasePath("/customers");
+        beanConfig.setBasePath("/api");
         beanConfig.setResourcePackage("com.redhat.refarch.microservices.sales.service");
         beanConfig.setScan(true);
     }
