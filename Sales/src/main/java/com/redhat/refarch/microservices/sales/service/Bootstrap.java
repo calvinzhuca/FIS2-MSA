@@ -19,7 +19,7 @@ public class Bootstrap extends HttpServlet {
         beanConfig.setVersion("1.0");
         beanConfig.setSchemes(new String[]{"http"});
         beanConfig.setHost("localhost:8002");
-        beanConfig.setBasePath("/api");
+        beanConfig.setBasePath("/customers");
         beanConfig.setResourcePackage("com.redhat.refarch.microservices.sales.service");
         beanConfig.setScan(true);
     }

@@ -93,7 +93,7 @@ public class SalesService
 	{
 		try
 		{
-			logInfo( "Customer Id is test: " + id );
+			logInfo( "Customer Id is test1: " + id );
 			Customer customer = em.find( Customer.class, id );
 			logInfo( "Customer with ID " + id + " is " + customer );
 			if( customer == null )
