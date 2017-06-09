@@ -33,7 +33,9 @@ import com.redhat.refarch.microservices.sales.model.Order;
 import com.redhat.refarch.microservices.sales.model.Order.Status;
 import com.redhat.refarch.microservices.sales.model.OrderItem;
 import com.redhat.refarch.microservices.utils.Utils;
+import io.swagger.annotations.Api;
 
+@Api
 @Stateless
 @LocalBean
 @Path("/customers")
