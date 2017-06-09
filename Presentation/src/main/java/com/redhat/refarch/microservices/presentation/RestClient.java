@@ -112,7 +112,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     private static List<Map<String, Object>> searchProducts(String query) throws IOException, JSONException, URISyntaxException, HttpErrorException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("products");
         for (String keyword : query.split("\\s+")) {
             uriBuilder.addParameter("keyword", keyword);
@@ -131,7 +131,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     public static List<Map<String, Object>> getFeaturedProducts() throws IOException, JSONException, URISyntaxException, HttpErrorException {
-        //HttpClient client = new DefaultHttpClient();
+        //HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("products");
         uriBuilder.addParameter("featured", "");
@@ -151,7 +151,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     public static void register(HttpServletRequest request) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
         String[] customerAttributes = new String[]{"name", "address", "telephone", "email", "username", "password"};
         JSONObject jsonObject = Utils.getJsonObject(request, customerAttributes);
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers");
         HttpPost post = new HttpPost(uriBuilder.build());
         post.setEntity(new StringEntity(jsonObject.toString(), ContentType.APPLICATION_JSON));
@@ -170,7 +170,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     public static void login(HttpServletRequest request) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         JSONObject jsonObject = Utils.getJsonObject(request, "username", "password");
         URIBuilder uriBuilder = getUriBuilder("customers", "authenticate");
         HttpPost post = new HttpPost(uriBuilder.build());
@@ -199,7 +199,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
 
     private static void getPendingOrder(HttpServletRequest request, long customerId) throws ClientProtocolException, IOException, JSONException,
             URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders");
         uriBuilder.addParameter("status", "Initial");
         HttpGet get = new HttpGet(uriBuilder.build());
@@ -242,7 +242,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     private static void populateProductInfo(OrderItem orderItem) throws ClientProtocolException, IOException, JSONException, URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("products", orderItem.getSku());
         HttpGet get = new HttpGet(uriBuilder.build());
         logInfo("Executing " + get);
@@ -306,7 +306,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     private static int getProductAvailability(long sku) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("products", sku);
         HttpGet get = new HttpGet(uriBuilder.build());
         logInfo("Executing " + get);
@@ -317,7 +317,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     private static long addInitialOrder(long customerId) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", "Initial");
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders");
@@ -332,7 +332,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     private static long addOrderItem(long customerId, long orderId, long sku, int quantity) throws JSONException, IOException, URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("sku", sku);
         jsonObject.put("quantity", quantity);
@@ -357,7 +357,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
             quantity = availability;
             request.setAttribute("errorMessage", "Requested quantity exceeds product availability");
         }
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("quantity", quantity);
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders", orderId, "orderItems", orderItemId);
@@ -370,7 +370,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     private static Long getOrderedProductSku(long customerId, long orderId, long orderItemId) throws JSONException, IOException, URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders", orderId, "orderItems", orderItemId);
         HttpGet get = new HttpGet(uriBuilder.build());
         logInfo("Executing " + get);
@@ -381,7 +381,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     private static void deleteOrderItem(long customerId, long orderId, long orderItemId) throws JSONException, IOException, URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders", orderId, "orderItems", orderItemId);
         HttpDelete delete = new HttpDelete(uriBuilder.build());
         logInfo("Executing " + delete);
@@ -460,7 +460,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         post.setEntity(new StringEntity(jsonObject.toString(), ContentType.APPLICATION_JSON));
 
         logInfo("Executing " + post);
-        HttpResponse response = new DefaultHttpClient().execute(post);
+        HttpResponse response = createHttpClient_AcceptsUntrustedCerts().execute(post);
         String responseString = EntityUtils.toString(response.getEntity());
 
         logInfo("Transaction processed as: " + responseString);
@@ -473,7 +473,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         HttpPost post = new HttpPost(uriBuilder.build());
 
         logInfo("Executing " + post);
-        HttpResponse response = new DefaultHttpClient().execute(post);
+        HttpResponse response = createHttpClient_AcceptsUntrustedCerts().execute(post);
 
         logInfo("Transaction refund response code: " + response.getStatusLine());
     }
@@ -487,7 +487,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
             list.add(map);
         }
         JSONArray jsonArray = new JSONArray(list);
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("products", "reduce");
         HttpPost post = new HttpPost(uriBuilder.build());
         post.setEntity(new StringEntity(jsonArray.toString(), ContentType.APPLICATION_JSON));
@@ -504,7 +504,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         Map<String, Object> customer = (Map<String, Object>) request.getSession().getAttribute("customer");
         Long customerId = (Long) customer.get("id");
 
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", "Paid");
         jsonObject.put("transactionNumber", transactionNumber);
@@ -543,7 +543,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         @SuppressWarnings("unchecked")
         Map<String, Object> customer = (Map<String, Object>) request.getSession().getAttribute("customer");
         long customerId = (Long) customer.get("id");
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders");
         HttpGet get = new HttpGet(uriBuilder.build());
         logInfo("Executing " + get);
@@ -594,7 +594,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     public static Long addProduct(JSONObject jsonObject) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("products");
         HttpPost post = new HttpPost(uriBuilder.build());
         post.setEntity(new StringEntity(jsonObject.toString(), ContentType.APPLICATION_JSON));
@@ -611,7 +611,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     public static void addKeyword(JSONObject jsonObject) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("products", "keywords");
         HttpPost post = new HttpPost(uriBuilder.build());
         post.setEntity(new StringEntity(jsonObject.toString(), ContentType.APPLICATION_JSON));
@@ -625,7 +625,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     public static void classifyProduct(long sku, List<String> keywords) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
-        HttpClient client = new DefaultHttpClient();
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("products", "classify", sku);
         HttpPost post = new HttpPost(uriBuilder.build());
         JSONArray jsonArray = new JSONArray();
