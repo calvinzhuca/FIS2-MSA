@@ -33,9 +33,7 @@ import com.redhat.refarch.microservices.sales.model.Order;
 import com.redhat.refarch.microservices.sales.model.Order.Status;
 import com.redhat.refarch.microservices.sales.model.OrderItem;
 import com.redhat.refarch.microservices.utils.Utils;
-import io.swagger.annotations.Api;
 
-@Api
 @Stateless
 @LocalBean
 @Path("/customers")
@@ -93,7 +91,7 @@ public class SalesService
 	{
 		try
 		{
-			logInfo( "Customer Id is test1: " + id );
+			logInfo( "Customer Id is " + id );
 			Customer customer = em.find( Customer.class, id );
 			logInfo( "Customer with ID " + id + " is " + customer );
 			if( customer == null )
