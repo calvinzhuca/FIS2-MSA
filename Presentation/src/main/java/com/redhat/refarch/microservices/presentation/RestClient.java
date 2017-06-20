@@ -45,7 +45,7 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 public class RestClient {
     public static String  userKey = System.getenv("USER_KEY");
-    public static String serviceAddress = System.getenv("SVC_ADDRESS");
+    public static String serviceAddress = System.getenv("SERVICE_ADDRESS");
 
  
 public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
