@@ -526,11 +526,22 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
 //        uriBuilder.setHost("gateway-service");
 //        uriBuilder.setPort(9091);
 //Calvin: 
+
+        String userKey = System.getProperty("USER_KEY");
+        System.out.println("!!!!!!!!!!!!!!!!!!! getProperty userKey: " + userKey);
+
+        userKey = System.getenv("USER_KEY");
+        System.out.println("!!!!!!!!!!!!!!!!!!! getenv userKey: " + userKey);
+        
+        userKey = "032acee45c566dc8b510b0ab7d30be4d";
+
+
         uriBuilder.setScheme("https");
         uriBuilder.setHost("fuse-gateway-service-3scale-apicast-staging.middleware.ocp.cloud.lab.eng.bos.redhat.com");
         
         uriBuilder.setPort(443);
-        uriBuilder.addParameter("user_key","032acee45c566dc8b510b0ab7d30be4d");
+        uriBuilder.addParameter("user_key",userKey);
+        
 
         StringWriter stringWriter = new StringWriter();
         for (Object part : path) {
