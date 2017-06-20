@@ -527,9 +527,9 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
 //        uriBuilder.setPort(9091);
 //Calvin: 
         uriBuilder.setScheme("https");
-        uriBuilder.setHost("fuse-gateway-svc-3scale-apicast-staging.middleware.ocp.cloud.lab.eng.bos.redhat.com");
+        uriBuilder.setHost("fuse-gateway-service-3scale-apicast-staging.middleware.ocp.cloud.lab.eng.bos.redhat.com");
         uriBuilder.setPort(443);
-        uriBuilder.addParameter("user_key","c1092e9236eb0693a884d4096941629e");
+        uriBuilder.addParameter("user_key","032acee45c566dc8b510b0ab7d30be4d");
 
         StringWriter stringWriter = new StringWriter();
         for (Object part : path) {
