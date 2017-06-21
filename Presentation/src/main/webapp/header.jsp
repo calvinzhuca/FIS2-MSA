@@ -3,10 +3,9 @@
 	import="com.redhat.refarch.microservices.presentation.RestClient"%>
 
     <p>environment variables used to connect to gateway services: </p>
-    					<%
-						out.println("user_key" + RestClient.userKey);
-                                                out.println("serviceAddress" + RestClient.serviceAddress);
-					%>
+    					<% out.println("user_key: " + RestClient.userKey); %>
+                                        <br>
+                                        <% out.println("Service Address: " + RestClient.serviceAddress); %>
 
 <form id="headerForm" target="_self" method="post">
 	<table style="width: 100%;">

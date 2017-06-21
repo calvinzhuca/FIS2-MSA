@@ -171,7 +171,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
             jsonObject.put("id", new JSONObject(responseString).getString("id"));
             request.getSession().setAttribute("customer", Utils.getCustomer(jsonObject));
             request.getSession().setAttribute("itemCount", 0);
-            getPendingOrder(request, jsonObject.getLong("id"));
+            getPendingOrder(request, new Long(jsonObject.getString("id")));
         }
     }
 
