@@ -222,19 +222,22 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
                 request.removeAttribute("cart");
             } else {
                 JSONObject orderJson = orderArray.getJSONObject(0);
-                request.getSession().setAttribute("orderId", orderJson.getString("id"));
+                String orderId = orderJson.getString("id");
+                request.getSession().setAttribute("orderId", orderId);
                 JSONArray jsonArray = orderJson.getJSONArray("orderItemIds");
                 List<OrderItem> orderItems = new ArrayList<OrderItem>();
                 for (int index = 0; index < jsonArray.length(); index++) {
                     //JSONObject orderItemJson = jsonArray.getJSONObject(index);
                     String orderItemId = (String)jsonArray.getString(index);
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!! getPendingOrder + orderItem: " + orderItemId);
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!! getPendingOrder + orderItemId: " + orderItemId);
+                    JSONObject jsonResponse = getOrderedItemDetails(customerId, orderId, orderItemId);
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!! getPendingOrder + quantity: " + jsonResponse.getInt("quantity"));
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!! getPendingOrder + sku: " + jsonResponse.getString("sku"));
                     
                     OrderItem orderItem = new OrderItem();
-                    orderItem.setId(orderItemId);
-                    //orderItem.setSku(orderItemJson.getString("sku"));
-                    //orderItem.setId(orderItemJson.getString("id"));
-                    //orderItem.setQuantity(orderItemJson.getInt("quantity"));
+                    orderItem.setId(orderId);
+                    orderItem.setSku(jsonResponse.getString("sku"));
+                    orderItem.setQuantity(jsonResponse.getInt("quantity"));
                     populateProductInfo(orderItem);
                     orderItems.add(orderItem);
                 }
@@ -379,6 +382,19 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         logInfo("Got response " + responseString);
     }
 
+    private static JSONObject getOrderedItemDetails(String customerId, String orderId, String orderItemId) throws JSONException, IOException, URISyntaxException {
+        HttpClient client = createHttpClient_AcceptsUntrustedCerts();
+        URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders", orderId, "orderItems", orderItemId);
+        HttpGet get = new HttpGet(uriBuilder.build());
+        logInfo("Executing " + get);
+        HttpResponse response = client.execute(get);
+        String responseString = EntityUtils.toString(response.getEntity());
+        JSONObject jsonResponse = new JSONObject(responseString);
+        return jsonResponse;
+    }
+   
+    
+    
     private static String getOrderedProductSku(String customerId, String orderId, String orderItemId) throws JSONException, IOException, URISyntaxException {
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders", orderId, "orderItems", orderItemId);
