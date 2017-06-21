@@ -223,7 +223,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
             } else {
                 JSONObject orderJson = orderArray.getJSONObject(0);
                 request.getSession().setAttribute("orderId", orderJson.getString("id"));
-                JSONArray jsonArray = orderJson.getJSONArray("orderItems");
+                JSONArray jsonArray = orderJson.getJSONArray("orderItemIds");
                 List<OrderItem> orderItems = new ArrayList<OrderItem>();
                 for (int index = 0; index < jsonArray.length(); index++) {
                     JSONObject orderItemJson = jsonArray.getJSONObject(index);
