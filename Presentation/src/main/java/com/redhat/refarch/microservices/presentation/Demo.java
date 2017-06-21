@@ -25,11 +25,11 @@ public class Demo
 		if( RestClient.getFeaturedProducts().isEmpty() )
 		{
 			//Map products to their category as you add them:
-			Map<Long, List<String>> skuKeywords = new HashMap<>();
+			Map<String, List<String>> skuKeywords = new HashMap<>();
 			for( String[] data : readCSV() )
 			{
 				JSONObject jsonObject = getProduct( data );
-				long sku = RestClient.addProduct( jsonObject );
+				String sku = RestClient.addProduct( jsonObject );
 				List<String> productKeywords = new ArrayList<>();
 				skuKeywords.put( sku, productKeywords );
 				String image = jsonObject.getString( "image" );
@@ -56,7 +56,7 @@ public class Demo
 			}
 			//Get unique keywords:
 			Set<String> keywords = new HashSet<>();
-			for( Entry<Long, List<String>> entry : skuKeywords.entrySet() )
+			for( Entry<String, List<String>> entry : skuKeywords.entrySet() )
 			{
 				keywords.addAll( entry.getValue() );
 			}
@@ -68,7 +68,7 @@ public class Demo
 				RestClient.addKeyword( jsonObject );
 			}
 			//Classify products:
-			for( Entry<Long, List<String>> entry : skuKeywords.entrySet() )
+			for( Entry<String, List<String>> entry : skuKeywords.entrySet() )
 			{
 				RestClient.classifyProduct( entry.getKey(), entry.getValue() );
 			}
