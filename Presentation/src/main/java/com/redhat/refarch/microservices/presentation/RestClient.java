@@ -227,11 +227,11 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
                 List<OrderItem> orderItems = new ArrayList<OrderItem>();
                 for (int index = 0; index < jsonArray.length(); index++) {
                     //JSONObject orderItemJson = jsonArray.getJSONObject(index);
-                    String sku = (String)jsonArray.getString(index);
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!! getPendingOrder + sku" + sku);
+                    String orderItemId = (String)jsonArray.getString(index);
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!! getPendingOrder + orderItem: " + orderItemId);
                     
                     OrderItem orderItem = new OrderItem();
-                    orderItem.setSku(sku);
+                    orderItem.setId(orderItemId);
                     //orderItem.setSku(orderItemJson.getString("sku"));
                     //orderItem.setId(orderItemJson.getString("id"));
                     //orderItem.setQuantity(orderItemJson.getInt("quantity"));
