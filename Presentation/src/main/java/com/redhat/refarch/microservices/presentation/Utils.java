@@ -49,7 +49,7 @@ public class Utils
 		customer.put( "name", jsonObject.getString( "name" ) );
 		customer.put( "address", jsonObject.getString( "address" ) );
 		customer.put( "telephone", jsonObject.getString( "telephone" ) );
-		customer.put( "id", jsonObject.getLong( "id" ) );
+		customer.put( "id", jsonObject.getString( "id" ) );
 		return customer;
 	}
 }

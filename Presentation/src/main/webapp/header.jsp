@@ -1,4 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@page
+	import="com.redhat.refarch.microservices.presentation.RestClient"%>
+
+    <p>environment variables used to connect to gateway services: </p>
+    					<%
+						out.println("user_key" + RestClient.userKey);
+                                                out.println("serviceAddress" + RestClient.serviceAddress);
+					%>
 
 <form id="headerForm" target="_self" method="post">
 	<table style="width: 100%;">
