@@ -265,7 +265,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         JSONObject jsonResponse = new JSONObject(responseString);
         orderItem.setAvailability(jsonResponse.getInt("availability"));
         orderItem.setDescription(jsonResponse.getString("description"));
-        orderItem.setFeatured(jsonResponse.getBoolean("featured"));
+        orderItem.setFeatured(jsonResponse.getBoolean("isFeatured"));
         orderItem.setHeight(jsonResponse.getInt("height"));
         orderItem.setImage(jsonResponse.getString("image"));
         orderItem.setLength(jsonResponse.getInt("length"));
