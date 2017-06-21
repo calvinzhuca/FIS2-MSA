@@ -7,18 +7,18 @@ import java.util.List;
 public class Order
 {
 
-	private long id;
+	private String id;
 	private String status;
 	private Long transactionNumber;
 	private Date transactionDate;
 	private List<OrderItem> orderItems = new ArrayList<OrderItem>();
 
-	public long getId()
+	public String getId()
 	{
 		return id;
 	}
 
-	public void setId(long id)
+	public void setId(String id)
 	{
 		this.id = id;
 	}

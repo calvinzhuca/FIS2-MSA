@@ -222,14 +222,14 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
                 request.removeAttribute("cart");
             } else {
                 JSONObject orderJson = orderArray.getJSONObject(0);
-                request.getSession().setAttribute("orderId", orderJson.getLong("id"));
+                request.getSession().setAttribute("orderId", orderJson.getString("id"));
                 JSONArray jsonArray = orderJson.getJSONArray("orderItems");
                 List<OrderItem> orderItems = new ArrayList<OrderItem>();
                 for (int index = 0; index < jsonArray.length(); index++) {
                     JSONObject orderItemJson = jsonArray.getJSONObject(index);
                     OrderItem orderItem = new OrderItem();
                     orderItem.setSku(orderItemJson.getString("sku"));
-                    orderItem.setId(orderItemJson.getLong("id"));
+                    orderItem.setId(orderItemJson.getString("id"));
                     orderItem.setQuantity(orderItemJson.getInt("quantity"));
                     populateProductInfo(orderItem);
                     orderItems.add(orderItem);
@@ -286,7 +286,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         @SuppressWarnings("unchecked")
         Map<String, Object> customer = (Map<String, Object>) request.getSession().getAttribute("customer");
         String customerId = (String) customer.get("id");
-        Long orderId = (Long) request.getSession().getAttribute("orderId");
+        String orderId = (String) request.getSession().getAttribute("orderId");
         if (orderId == null) {
             orderId = addInitialOrder(customerId);
             addOrderItem(customerId, orderId, sku, 1);
@@ -303,7 +303,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
             if (orderItem == null) {
                 addOrderItem(customerId, orderId, sku, 1);
             } else {
-                long orderItemId = orderItem.getId();
+                String orderItemId = orderItem.getId();
                 int quantity = orderItem.getQuantity() + 1;
                 updateOrderItem(request, customerId, orderId, orderItemId, sku, quantity);
             }
@@ -337,7 +337,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         return jsonResponse.getString("id");
     }
 
-    private static long addOrderItem(String customerId, long orderId, String sku, int quantity) throws JSONException, IOException, URISyntaxException {
+    private static String addOrderItem(String customerId, String orderId, String sku, int quantity) throws JSONException, IOException, URISyntaxException {
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("sku", sku);
@@ -350,10 +350,10 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         String responseString = EntityUtils.toString(response.getEntity());
         logInfo("Got response " + responseString);
         JSONObject jsonResponse = new JSONObject(responseString);
-        return jsonResponse.getLong("id");
+        return jsonResponse.getString("id");
     }
 
-    private static void updateOrderItem(HttpServletRequest request, String customerId, long orderId, long orderItemId, String sku, int quantity)
+    private static void updateOrderItem(HttpServletRequest request, String customerId, String orderId, String orderItemId, String sku, int quantity)
             throws JSONException, IOException, URISyntaxException {
         if (sku == null) {
             sku = getOrderedProductSku(customerId, orderId, orderItemId);
@@ -375,7 +375,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         logInfo("Got response " + responseString);
     }
 
-    private static String getOrderedProductSku(String customerId, long orderId, long orderItemId) throws JSONException, IOException, URISyntaxException {
+    private static String getOrderedProductSku(String customerId, String orderId, String orderItemId) throws JSONException, IOException, URISyntaxException {
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders", orderId, "orderItems", orderItemId);
         HttpGet get = new HttpGet(uriBuilder.build());
@@ -386,7 +386,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         return jsonResponse.getString("sku");
     }
 
-    private static void deleteOrderItem(String customerId, long orderId, long orderItemId) throws JSONException, IOException, URISyntaxException {
+    private static void deleteOrderItem(String customerId, String orderId, String orderItemId) throws JSONException, IOException, URISyntaxException {
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders", orderId, "orderItems", orderItemId);
         HttpDelete delete = new HttpDelete(uriBuilder.build());
@@ -399,8 +399,8 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         @SuppressWarnings("unchecked")
         Map<String, Object> customer = (Map<String, Object>) request.getSession().getAttribute("customer");
         String customerId = (String) customer.get("id");
-        Long orderId = (Long) request.getSession().getAttribute("orderId");
-        Long orderItemId = Long.valueOf(request.getParameter("orderItemId"));
+        String orderId = (String) request.getSession().getAttribute("orderId");
+        String orderItemId = String.valueOf(request.getParameter("orderItemId"));
         int quantity = Integer.valueOf(request.getParameter("quantity"));
         if (quantity == 0) {
             deleteOrderItem(customerId, orderId, orderItemId);
@@ -505,7 +505,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     private static void markOrderPayment(HttpServletRequest request, JSONObject jsonResponse) throws JSONException, URISyntaxException, IOException {
         Long transactionNumber = jsonResponse.getLong("transactionNumber");
         Long transactionDate = jsonResponse.getLong("transactionDate");
-        Long orderId = jsonResponse.getLong("orderNumber");
+        String orderId = jsonResponse.getString("orderNumber");
         @SuppressWarnings("unchecked")
         Map<String, Object> customer = (Map<String, Object>) request.getSession().getAttribute("customer");
         String customerId = (String) customer.get("id");
@@ -567,7 +567,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
             for (int index = 0; index < orderArray.length(); index++) {
                 JSONObject orderJson = orderArray.getJSONObject(index);
                 Order order = new Order();
-                order.setId(orderJson.getLong("id"));
+                order.setId(orderJson.getString("id"));
                 order.setStatus(orderJson.getString("status"));
                 if (!orderJson.isNull("transactionNumber")) {
                     order.setTransactionNumber(orderJson.getLong("transactionNumber"));
@@ -580,7 +580,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
                     JSONObject orderItemJson = orderItemArray.getJSONObject(itemIndex);
                     OrderItem orderItem = new OrderItem();
                     orderItem.setSku(orderItemJson.getString("sku"));
-                    orderItem.setId(orderItemJson.getLong("id"));
+                    orderItem.setId(orderItemJson.getString("id"));
                     orderItem.setQuantity(orderItemJson.getInt("quantity"));
                     populateProductInfo(orderItem);
                     order.addOrderItem(orderItem);
@@ -659,7 +659,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
 
         @Override
         public int compare(Order order1, Order order2) {
-            return (int) (order2.getId() - order1.getId());
+            return 1;
         }
     };
 }

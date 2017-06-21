@@ -4,7 +4,7 @@ package com.redhat.refarch.microservices.presentation;
 public class OrderItem
 {
 
-	private long id;
+	private String id;
 	private String sku;
 	private int quantity;
 	private String name;
@@ -18,12 +18,12 @@ public class OrderItem
 	private Double price;
 	private String image;
 
-	public long getId()
+	public String getId()
 	{
 		return id;
 	}
 
-	public void setId(long id)
+	public void setId(String id)
 	{
 		this.id = id;
 	}
