@@ -322,7 +322,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         return jsonResponse.getInt("availability");
     }
 
-    private static long addInitialOrder(String customerId) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
+    private static String addInitialOrder(String customerId) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", "Initial");
@@ -334,7 +334,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         String responseString = EntityUtils.toString(response.getEntity());
         logInfo("Got response " + responseString);
         JSONObject jsonResponse = new JSONObject(responseString);
-        return jsonResponse.getLong("id");
+        return jsonResponse.getString("id");
     }
 
     private static long addOrderItem(String customerId, long orderId, String sku, int quantity) throws JSONException, IOException, URISyntaxException {
