@@ -5,7 +5,7 @@ public class OrderItem
 {
 
 	private long id;
-	private long sku;
+	private String sku;
 	private int quantity;
 	private String name;
 	private String description;
@@ -28,12 +28,12 @@ public class OrderItem
 		this.id = id;
 	}
 
-	public long getSku()
+	public String getSku()
 	{
 		return sku;
 	}
 
-	public void setSku(long sku)
+	public void setSku(String sku)
 	{
 		this.sku = sku;
 	}
