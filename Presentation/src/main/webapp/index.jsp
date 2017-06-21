@@ -13,11 +13,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <head>
 <body>
-    					<%
-						System.out.println("user_key" + RestClient.userKey);
-                                                System.out.println("serviceAddress" + RestClient.serviceAddress);
-					%>
-
 	<c:choose>
 		<c:when test="${param.register}">
 			<%@include file="register.jsp"%>

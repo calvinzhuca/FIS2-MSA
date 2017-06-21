@@ -168,7 +168,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         } else {
             String responseString = EntityUtils.toString(response.getEntity());
             logInfo("Got " + responseString);
-            jsonObject.put("id", new JSONObject(responseString).getLong("id"));
+            jsonObject.put("id", new JSONObject(responseString).getString("id"));
             request.getSession().setAttribute("customer", Utils.getCustomer(jsonObject));
             request.getSession().setAttribute("itemCount", 0);
             getPendingOrder(request, jsonObject.getLong("id"));
