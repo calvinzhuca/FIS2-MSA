@@ -171,7 +171,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
             jsonObject.put("id", new JSONObject(responseString).getString("id"));
             request.getSession().setAttribute("customer", Utils.getCustomer(jsonObject));
             request.getSession().setAttribute("itemCount", 0);
-            getPendingOrder(request, new Long(jsonObject.getString("id")));
+            getPendingOrder(request, new Double(jsonObject.getString("id")));
         }
     }
 
@@ -199,11 +199,11 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
             JSONObject jsonResponse = new JSONObject(responseString);
             request.getSession().setAttribute("customer", Utils.getCustomer(jsonResponse));
             request.getSession().setAttribute("itemCount", 0);
-            getPendingOrder(request, jsonResponse.getLong("id"));
+            getPendingOrder(request, new Double(jsonResponse.getString("id")));
         }
     }
 
-    private static void getPendingOrder(HttpServletRequest request, long customerId) throws ClientProtocolException, IOException, JSONException,
+    private static void getPendingOrder(HttpServletRequest request, double customerId) throws ClientProtocolException, IOException, JSONException,
             URISyntaxException {
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders");
@@ -285,7 +285,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         }
         @SuppressWarnings("unchecked")
         Map<String, Object> customer = (Map<String, Object>) request.getSession().getAttribute("customer");
-        long customerId = (Long) customer.get("id");
+        Double customerId = (Double) customer.get("id");
         Long orderId = (Long) request.getSession().getAttribute("orderId");
         if (orderId == null) {
             orderId = addInitialOrder(customerId);
@@ -322,7 +322,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         return jsonResponse.getInt("availability");
     }
 
-    private static long addInitialOrder(long customerId) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
+    private static long addInitialOrder(Double customerId) throws JSONException, ClientProtocolException, IOException, URISyntaxException {
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("status", "Initial");
@@ -337,7 +337,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         return jsonResponse.getLong("id");
     }
 
-    private static long addOrderItem(long customerId, long orderId, long sku, int quantity) throws JSONException, IOException, URISyntaxException {
+    private static long addOrderItem(double customerId, long orderId, long sku, int quantity) throws JSONException, IOException, URISyntaxException {
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("sku", sku);
@@ -353,7 +353,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         return jsonResponse.getLong("id");
     }
 
-    private static void updateOrderItem(HttpServletRequest request, long customerId, long orderId, long orderItemId, Long sku, int quantity)
+    private static void updateOrderItem(HttpServletRequest request, double customerId, long orderId, long orderItemId, Long sku, int quantity)
             throws JSONException, IOException, URISyntaxException {
         if (sku == null) {
             sku = getOrderedProductSku(customerId, orderId, orderItemId);
@@ -375,7 +375,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         logInfo("Got response " + responseString);
     }
 
-    private static Long getOrderedProductSku(long customerId, long orderId, long orderItemId) throws JSONException, IOException, URISyntaxException {
+    private static Long getOrderedProductSku(double customerId, long orderId, long orderItemId) throws JSONException, IOException, URISyntaxException {
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders", orderId, "orderItems", orderItemId);
         HttpGet get = new HttpGet(uriBuilder.build());
@@ -386,7 +386,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         return jsonResponse.getLong("sku");
     }
 
-    private static void deleteOrderItem(long customerId, long orderId, long orderItemId) throws JSONException, IOException, URISyntaxException {
+    private static void deleteOrderItem(double customerId, long orderId, long orderItemId) throws JSONException, IOException, URISyntaxException {
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders", orderId, "orderItems", orderItemId);
         HttpDelete delete = new HttpDelete(uriBuilder.build());
@@ -398,7 +398,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     public static void updateQuantity(HttpServletRequest request) throws ClientProtocolException, IOException, JSONException, URISyntaxException {
         @SuppressWarnings("unchecked")
         Map<String, Object> customer = (Map<String, Object>) request.getSession().getAttribute("customer");
-        long customerId = (Long) customer.get("id");
+        double customerId = (Double) customer.get("id");
         Long orderId = (Long) request.getSession().getAttribute("orderId");
         Long orderItemId = Long.valueOf(request.getParameter("orderItemId"));
         int quantity = Integer.valueOf(request.getParameter("quantity"));
@@ -508,7 +508,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         Long orderId = jsonResponse.getLong("orderNumber");
         @SuppressWarnings("unchecked")
         Map<String, Object> customer = (Map<String, Object>) request.getSession().getAttribute("customer");
-        Long customerId = (Long) customer.get("id");
+        Double customerId = (Double) customer.get("id");
 
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         JSONObject jsonObject = new JSONObject();
@@ -553,7 +553,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     public static void getOrderHistory(HttpServletRequest request) throws URISyntaxException, ParseException, IOException, JSONException {
         @SuppressWarnings("unchecked")
         Map<String, Object> customer = (Map<String, Object>) request.getSession().getAttribute("customer");
-        long customerId = (Long) customer.get("id");
+        Double customerId = (Double) customer.get("id");
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
         URIBuilder uriBuilder = getUriBuilder("customers", customerId, "orders");
         HttpGet get = new HttpGet(uriBuilder.build());
