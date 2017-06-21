@@ -50,10 +50,7 @@ public class RestClient {
  
 public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     try {
-        System.out.println("!!!!!!!!!!!!!!!!!!! getenv userKey: " + userKey);
-        System.out.println("!!!!!!!!!!!!!!!!!!! getenv serviceAddress: " + serviceAddress);
-
-        
+       
         HttpClientBuilder b = HttpClientBuilder.create();
         
         // setup a Trust Strategy that allows all certificates.
