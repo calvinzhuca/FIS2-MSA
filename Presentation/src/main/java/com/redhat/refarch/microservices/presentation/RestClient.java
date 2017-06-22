@@ -502,10 +502,9 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     private static HttpResponse reduceInventory(List<OrderItem> orderItems) throws URISyntaxException, IOException {
-        System.out.println("!!!!!!!!!!!!!!!!here3" + orderItems.size());
+        System.out.println("!!!!!!!!!!!!!!!!here2" + orderItems.size());
         List<Map<String, Object>> list = new ArrayList<>();
         for (OrderItem orderItem : orderItems) {
-            System.out.println("!!!!!!!!!!!!!!!!here4" + orderItems.size());
             System.out.println("!!!!!!!!!!!!!!!getSku: " + orderItem.getSku());
             System.out.println("!!!!!!!!!!!!!!!getQuantity" + orderItem.getQuantity());
             Map<String, Object> map = new HashMap<>();
@@ -549,13 +548,6 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     private static URIBuilder getUriBuilder(Object... path) {
 
         URIBuilder uriBuilder = new URIBuilder();
-//        uriBuilder.setScheme("http");
-//        uriBuilder.setHost("gateway-service");
-//        uriBuilder.setPort(9091);
-//Calvin: 
-
-
-
         uriBuilder.setScheme("https");
         uriBuilder.setHost(serviceAddress);
         
@@ -596,7 +588,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
                 if (!orderJson.isNull("transactionDate")) {
                     order.setTransactionDate(new Date(orderJson.getLong("transactionDate")));
                 }
-                JSONArray orderItemArray = orderJson.getJSONArray("orderItems");
+                JSONArray orderItemArray = orderJson.getJSONArray("orderItemIds");
                 for (int itemIndex = 0; itemIndex < orderItemArray.length(); itemIndex++) {
                     JSONObject orderItemJson = orderItemArray.getJSONObject(itemIndex);
                     OrderItem orderItem = new OrderItem();
