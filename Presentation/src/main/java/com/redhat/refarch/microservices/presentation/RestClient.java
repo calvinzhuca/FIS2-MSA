@@ -576,11 +576,12 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
             String responseString = EntityUtils.toString(response.getEntity());
             logInfo("Got " + responseString);
             JSONArray orderArray = new JSONArray(responseString);
-            List<Order> orders = new ArrayList<Order>();
+            List<Order> orders = new ArrayList<>();
             for (int index = 0; index < orderArray.length(); index++) {
                 JSONObject orderJson = orderArray.getJSONObject(index);
                 Order order = new Order();
-                order.setId(orderJson.getString("id"));
+                String orderId = orderJson.getString("id");
+                order.setId(orderId);
                 order.setStatus(orderJson.getString("status"));
                 if (!orderJson.isNull("transactionNumber")) {
                     order.setTransactionNumber(orderJson.getLong("transactionNumber"));
@@ -588,13 +589,16 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
                 if (!orderJson.isNull("transactionDate")) {
                     order.setTransactionDate(new Date(orderJson.getLong("transactionDate")));
                 }
-                JSONArray orderItemArray = orderJson.getJSONArray("orderItemIds");
-                for (int itemIndex = 0; itemIndex < orderItemArray.length(); itemIndex++) {
-                    JSONObject orderItemJson = orderItemArray.getJSONObject(itemIndex);
+                JSONArray jsonArray = orderJson.getJSONArray("orderItemIds");
+                for (int itemIndex = 0; itemIndex < jsonArray.length(); itemIndex++) {
+                    //JSONObject orderItemJson = orderItemArray.getJSONObject(itemIndex);
+                    String orderItemId = (String)jsonArray.getString(index);
+                    JSONObject jsonResponse = getOrderedItemDetails(customerId, orderId, orderItemId);
+                    
                     OrderItem orderItem = new OrderItem();
-                    orderItem.setSku(orderItemJson.getString("sku"));
-                    orderItem.setId(orderItemJson.getString("id"));
-                    orderItem.setQuantity(orderItemJson.getInt("quantity"));
+                    orderItem.setSku(jsonResponse.getString("sku"));
+                    orderItem.setId(orderId);
+                    orderItem.setQuantity(jsonResponse.getInt("quantity"));
                     populateProductInfo(orderItem);
                     order.addOrderItem(orderItem);
                 }
