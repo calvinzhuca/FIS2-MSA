@@ -1,11 +1,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@page
-	import="com.redhat.refarch.microservices.presentation.RestClient"%>
+<%@page import="com.redhat.refarch.microservices.presentation.RestClient"%>
 
    
 <script type="text/javascript">
     console.log('user_key: ' + '<%=RestClient.userKey%>');
-    console.log('Service Address: ' + '<%=RestClient.serviceAddress%>');
+    console.log('service address: ' + '<%=RestClient.serviceAddress%>');
 </script>
 <form id="headerForm" target="_self" method="post">
 	<table style="width: 100%;">
