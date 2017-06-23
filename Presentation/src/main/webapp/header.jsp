@@ -2,9 +2,16 @@
 <%@page
 	import="com.redhat.refarch.microservices.presentation.RestClient"%>
 
+<%
+    String itemCode = RestClient.userKey;
+    out.println("user_key1: "+ itemCode);
+%>    
+    
 <script type="text/javascript">
     console.log('user_key:');
-    console.log(<%out.println(RestClient.userKey);%>);
+    console.log(<%=itemCode%>);
+    var testKey = '<%=itemCode%>';
+    console.log("testKey: " + testKey);
 </script>
 <form id="headerForm" target="_self" method="post">
 	<table style="width: 100%;">
