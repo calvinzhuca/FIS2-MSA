@@ -4,8 +4,8 @@
 
    
 <script type="text/javascript">
-    console.log('user_key' + '<%=RestClient.userKey%>');
-    console.log('Service Address' + '<%=RestClient.serviceAddress%>');
+    console.log('user_key: ' + '<%=RestClient.userKey%>');
+    console.log('Service Address: ' + '<%=RestClient.serviceAddress%>');
 </script>
 <form id="headerForm" target="_self" method="post">
 	<table style="width: 100%;">
