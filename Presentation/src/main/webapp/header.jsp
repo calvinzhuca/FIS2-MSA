@@ -9,7 +9,7 @@
     
 <script type="text/javascript">
     console.log('user_key:');
-    console.log(<%=itemCode%>);
+    console.log('<%=itemCode%>');
     var testKey = '<%=itemCode%>';
     console.log("testKey: " + testKey);
 </script>
