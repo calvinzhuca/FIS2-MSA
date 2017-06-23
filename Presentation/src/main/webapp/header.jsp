@@ -8,8 +8,10 @@
 %>    
     
 <script type="text/javascript">
-    console.log('user_key:');
-    console.log('<%=itemCode%>');
+    console.log('user_key');
+    console.log('<%=RestClient.userKey%>');
+    console.log('Service Address');
+    console.log('<%=RestClient.serviceAddress%>');
     var testKey = '<%=itemCode%>';
     console.log("testKey: " + testKey);
 </script>
