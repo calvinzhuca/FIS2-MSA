@@ -590,8 +590,10 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
                     order.setTransactionDate(new Date(orderJson.getLong("transactionDate")));
                 }
                 JSONArray jsonArray = orderJson.getJSONArray("orderItemIds");
+                System.out.println("!!!!!!!!!jsonArray.length(): " + jsonArray.length());
                 for (int itemIndex = 0; itemIndex < jsonArray.length(); itemIndex++) {
                     //JSONObject orderItemJson = orderItemArray.getJSONObject(itemIndex);
+                    System.out.println("!!!!!!!!!!!!! itemIndex" + itemIndex);
                     String orderItemId = (String)jsonArray.getString(index);
                     JSONObject jsonResponse = getOrderedItemDetails(customerId, orderId, orderItemId);
                     
