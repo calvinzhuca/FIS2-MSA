@@ -427,12 +427,9 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     public static void completeOrder(HttpServletRequest request) throws ClientProtocolException, IOException, JSONException, URISyntaxException {
         JSONObject jsonResponse = processTransaction(request);
         String status = jsonResponse.getString("status");
-        System.out.println("!!!!!!!!!!!!!!!!here1");
         if ("SUCCESS".equals(status)) {
             @SuppressWarnings("unchecked")
             List<OrderItem> orderItems = (List<OrderItem>) request.getSession().getAttribute("orderItems");
-        System.out.println("!!!!!!!!!!!!!!!!here1.5" );
-        System.out.println("!!!!!!!!!!!!!!!!here2" + orderItems.size());
             try {
                 HttpResponse response = reduceInventory(orderItems);
                 if (isError(response)) {
@@ -502,11 +499,8 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     private static HttpResponse reduceInventory(List<OrderItem> orderItems) throws URISyntaxException, IOException {
-        System.out.println("!!!!!!!!!!!!!!!!here3" + orderItems.size());
         List<Map<String, Object>> list = new ArrayList<>();
         for (OrderItem orderItem : orderItems) {
-            System.out.println("!!!!!!!!!!!!!!!getSku: " + orderItem.getSku());
-            System.out.println("!!!!!!!!!!!!!!!getQuantity" + orderItem.getQuantity());
             Map<String, Object> map = new HashMap<>();
             map.put("sku", orderItem.getSku());
             map.put("quantity", orderItem.getQuantity());
@@ -590,10 +584,8 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
                     order.setTransactionDate(new Date(orderJson.getLong("transactionDate")));
                 }
                 JSONArray jsonArray = orderJson.getJSONArray("orderItemIds");
-                System.out.println("!!!!!!!!!jsonArray.length(): " + jsonArray.length());
                 for (int itemIndex = 0; itemIndex < jsonArray.length(); itemIndex++) {
                     //JSONObject orderItemJson = orderItemArray.getJSONObject(itemIndex);
-                    System.out.println("!!!!!!!!!!!!! itemIndex2" + itemIndex);
                     String orderItemId = (String)jsonArray.getString(itemIndex);
                     JSONObject jsonResponse = getOrderedItemDetails(customerId, orderId, orderItemId);
                     
