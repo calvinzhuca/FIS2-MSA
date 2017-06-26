@@ -502,7 +502,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
     }
 
     private static HttpResponse reduceInventory(List<OrderItem> orderItems) throws URISyntaxException, IOException {
-        System.out.println("!!!!!!!!!!!!!!!!here2" + orderItems.size());
+        System.out.println("!!!!!!!!!!!!!!!!here3" + orderItems.size());
         List<Map<String, Object>> list = new ArrayList<>();
         for (OrderItem orderItem : orderItems) {
             System.out.println("!!!!!!!!!!!!!!!getSku: " + orderItem.getSku());
@@ -514,7 +514,7 @@ public static HttpClient createHttpClient_AcceptsUntrustedCerts() {
         }
         JSONArray jsonArray = new JSONArray(list);
         HttpClient client = createHttpClient_AcceptsUntrustedCerts();
-        URIBuilder uriBuilder = getUriBuilder("products", "reduce");
+        URIBuilder uriBuilder = getUriBuilder("products", "reduction");
         HttpPost post = new HttpPost(uriBuilder.build());
         post.setEntity(new StringEntity(jsonArray.toString(), ContentType.APPLICATION_JSON));
         logInfo("Executing " + post);
