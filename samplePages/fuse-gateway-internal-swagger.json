@@ -5,7 +5,7 @@
     "version" : "1.0",
     "title" : "E-Commerce API Gateway internal"
   },
-  "host" : "fuse-gateway-internal-3scale-apicast-staging.middleware.ocp.cloud.lab.eng.bos.redhat.com:439",
+  "host" : "fuse-gateway-internal-3scale-apicast-staging.middleware.ocp.cloud.lab.eng.bos.redhat.com:443",
   "tags" : [ {
     "name" : "billing/process",
     "description" : "billing processing & warehouse fulfillment"
@@ -71,6 +71,14 @@
           "schema" : {
             "$ref" : "#/definitions/Transaction"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -95,6 +103,14 @@
           "description" : "transactionNumber to be refunded",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -119,6 +135,14 @@
           "schema" : {
             "$ref" : "#/definitions/Customer"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -144,6 +168,14 @@
           "schema" : {
             "$ref" : "#/definitions/Customer"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -169,6 +201,14 @@
           "schema" : {
             "$ref" : "#/definitions/Customer"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -196,6 +236,14 @@
           "schema" : {
             "$ref" : "#/definitions/Customer"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -250,6 +298,14 @@
           "description" : "customer to delete",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -272,6 +328,14 @@
           "description" : "id of customer to fetch orders from",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -306,6 +370,14 @@
           "schema" : {
             "$ref" : "#/definitions/Order"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -337,6 +409,14 @@
           "schema" : {
             "$ref" : "#/definitions/Order"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -368,6 +448,14 @@
           "schema" : {
             "$ref" : "#/definitions/Order"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -398,6 +486,14 @@
           "description" : "id of order to fetch",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -425,6 +521,14 @@
           "description" : "order to delete",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -456,6 +560,14 @@
           "description" : "id of order",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -493,6 +605,14 @@
           "schema" : {
             "$ref" : "#/definitions/OrderItem"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -533,6 +653,14 @@
           "schema" : {
             "$ref" : "#/definitions/OrderItem"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -573,6 +701,14 @@
           "schema" : {
             "$ref" : "#/definitions/OrderItem"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -612,6 +748,14 @@
           "description" : "Id of orderItem to fetch",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -645,6 +789,14 @@
           "description" : "id of orderItem to delete",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -655,41 +807,21 @@
         "x-routeId" : "route20"
       }
     },
-    "/demo/reset" : {
-      "get" : {
-        "tags" : [ "demo/reset" ],
-        "summary" : "reset demo dataset - removes all customers/orders, builds basic product set",
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "description" : "demo dataset reset"
-          }
-        },
-        "x-camelContextId" : "camel-1",
-        "x-routeId" : "route31"
-      }
-    },
-    "/demo/testApi" : {
-      "get" : {
-        "tags" : [ "demo/testApi" ],
-        "summary" : "test API endpoints",
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "description" : "API test successful"
-          }
-        },
-        "x-camelContextId" : "camel-1",
-        "x-routeId" : "route32"
-      }
-    },
     "/products" : {
       "get" : {
         "tags" : [ "products" ],
         "summary" : "list products",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
-        "parameters" : [ ],
+        "parameters" : [
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
+        } ],
         "responses" : {
           "200" : {
             "description" : "products fetched",
@@ -717,6 +849,14 @@
           "schema" : {
             "$ref" : "#/definitions/Product"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -742,6 +882,14 @@
           "schema" : {
             "$ref" : "#/definitions/Product"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -767,6 +915,14 @@
           "schema" : {
             "$ref" : "#/definitions/Product"
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -786,7 +942,15 @@
         "summary" : "list featured products",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
-        "parameters" : [ ],
+        "parameters" : [ 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
+        } ],
         "responses" : {
           "200" : {
             "description" : "featured products fetched",
@@ -814,6 +978,14 @@
           "description" : "keyword to fetch products by",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -846,6 +1018,14 @@
               "$ref" : "#/definitions/OrderItem"
             }
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -868,6 +1048,14 @@
           "description" : "sku of product to fetch",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -891,6 +1079,14 @@
           "description" : "product to delete",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -925,6 +1121,14 @@
               "format" : "java.lang.String"
             }
           }
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {

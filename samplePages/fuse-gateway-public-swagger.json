@@ -1,12 +1,39 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "Serving downstream product, sales, billing and fulfillment services",
+    "description" : "Serving downstream product HTTP Get services",
     "version" : "1.0",
     "title" : "E-Commerce API Gateway public"
   },
-  "host" : "fuse-gateway-public-3scale-apicast-staging.middleware.ocp.cloud.lab.eng.bos.redhat.com:439",
+  "host" : "fuse-gateway-public-3scale-apicast-staging.middleware.ocp.cloud.lab.eng.bos.redhat.com:443",
   "tags" : [ {
+    "name" : "billing/process",
+    "description" : "billing processing & warehouse fulfillment"
+  }, {
+    "name" : "billing/refund/{transactionNumber}",
+    "description" : "billing refunds endpoint"
+  }, {
+    "name" : "customers",
+    "description" : "customers endpoint"
+  }, {
+    "name" : "customers/authenticate",
+    "description" : "customer authentication endpoint"
+  }, {
+    "name" : "customers/{customerId}",
+    "description" : "individual customer endpoint"
+  }, {
+    "name" : "customers/{customerId}/orders",
+    "description" : "orders endpoint"
+  }, {
+    "name" : "customers/{customerId}/orders/{orderId}",
+    "description" : "individual order endpoint"
+  }, {
+    "name" : "customers/{customerId}/orders/{orderId}/orderItems",
+    "description" : "order items endpoint"
+  }, {
+    "name" : "customers/{customerId}/orders/{orderId}/orderItems/{orderItemId}",
+    "description" : "individual order item endpoint"
+  }, {
     "name" : "products",
     "description" : "products endpoint"
   }, {
@@ -16,18 +43,36 @@
     "name" : "products/{sku}",
     "description" : "individual product endpoint"
   }, {
+    "name" : "products/reduction"
+  }, {
+    "name" : "products/{sku}/keywords",
+    "description" : "product keywords endpoint"
+  }, {
     "name" : "products/keywords/{keyword}",
     "description" : "keyword lookup endpoint"
-  }],
+  }, {
+    "name" : "demo/reset"
+  }, {
+    "name" : "demo/testApi"
+  } ],
   "schemes" : [ "https" ],
   "paths" : {
+
     "/products" : {
       "get" : {
         "tags" : [ "products" ],
         "summary" : "list products",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
-        "parameters" : [ ],
+        "parameters" : [
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
+        } ],
         "responses" : {
           "200" : {
             "description" : "products fetched",
@@ -49,7 +94,15 @@
         "summary" : "list featured products",
         "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
-        "parameters" : [ ],
+        "parameters" : [ 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
+        } ],
         "responses" : {
           "200" : {
             "description" : "featured products fetched",
@@ -77,6 +130,14 @@
           "description" : "keyword to fetch products by",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -105,6 +166,14 @@
           "description" : "sku of product to fetch",
           "required" : true,
           "type" : "string"
+        }, 
+        {
+            "name": "user_key",
+            "in": "query",
+            "description": "Your API access key",
+            "required": true,
+            "x-data-threescale-name": "user_keys",
+            "type": "string"
         } ],
         "responses" : {
           "200" : {
@@ -122,39 +191,51 @@
   "definitions" : {
     "Order" : {
       "type" : "object",
+      "required" : [ "customerId", "orderItemIds", "transactionDate", "transactionNumber" ],
       "properties" : {
         "id" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Persistence ID of order"
         },
         "status" : {
           "type" : "string",
+          "description" : "Status of order",
           "enum" : [ "Initial", "InProgress", "Canceled", "Paid", "Shipped", "Completed" ]
         },
         "transactionNumber" : {
           "type" : "integer",
-          "format" : "int64"
+          "format" : "int64",
+          "description" : "Transaction number of order"
         },
         "transactionDate" : {
           "type" : "string",
-          "format" : "date-time"
+          "format" : "date-time",
+          "description" : "Date of transaction creation"
         },
         "customerId" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Persistence ID of customer"
         },
         "orderItemIds" : {
           "type" : "array",
+          "description" : "Persistence ID's of OrderItems",
           "items" : {
             "type" : "string"
           }
         }
       },
+      "description" : "Represents a customer's order in the system",
       "x-className" : {
         "type" : "string",
         "format" : "com.redhat.refarch.ecom.model.Order"
-      }},
+      }
+    },
     "Locale" : {
       "type" : "object",
       "properties" : {
+        "language" : {
+          "type" : "string"
+        },
         "script" : {
           "type" : "string"
         },
@@ -205,137 +286,173 @@
         },
         "displayName" : {
           "type" : "string"
-        },
-        "language" : {
-          "type" : "string"
         }
-      }},
+      }
+    },
     "Customer" : {
       "type" : "object",
+      "required" : [ "address", "email", "name", "password", "telephone", "username" ],
       "properties" : {
         "id" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Persistence ID of customer"
         },
         "name" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Full name of customer"
         },
         "address" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Full address of customer (123 Somewhere St, Nowhere, AZ 12345)"
         },
         "telephone" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Primary phone number for customer (+15551234567)"
         },
         "email" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Email address of customer"
         },
         "username" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Username for customer"
         },
         "password" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Password for customer"
         }
       },
+      "description" : "Represents a customer in the system",
       "x-className" : {
         "type" : "string",
         "format" : "com.redhat.refarch.ecom.model.Customer"
-      }},
+      }
+    },
     "Product" : {
       "type" : "object",
+      "required" : [ "availability", "description", "height", "image", "isFeatured", "keywords", "length", "name", "price", "weight", "width" ],
       "properties" : {
         "sku" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Persistence ID of product"
         },
         "name" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Name of product"
         },
         "description" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Description of product"
         },
         "length" : {
           "type" : "number",
-          "format" : "double"
+          "format" : "double",
+          "description" : "Imperial length dimension of product"
         },
         "width" : {
           "type" : "number",
-          "format" : "double"
+          "format" : "double",
+          "description" : "Imperial width dimension of product"
         },
         "height" : {
           "type" : "number",
-          "format" : "double"
+          "format" : "double",
+          "description" : "Imperial height dimension of product"
         },
         "weight" : {
           "type" : "number",
-          "format" : "double"
+          "format" : "double",
+          "description" : "Imperial weight measurement of product"
         },
         "isFeatured" : {
           "type" : "boolean",
+          "description" : "Flag indicating if product is to be specially advertised as featured",
           "default" : false
         },
         "availability" : {
           "type" : "integer",
-          "format" : "int32"
+          "format" : "int32",
+          "description" : "Quantity of product available for purchase"
         },
         "price" : {
-          "type" : "number"
+          "type" : "number",
+          "description" : "Price of a single product unit"
         },
         "image" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Visual representation identifier for product"
         },
         "keywords" : {
           "type" : "array",
+          "description" : "Keywords which categorize the product",
           "items" : {
             "type" : "string"
           }
         }
       },
+      "description" : "Represents a product in the system",
       "x-className" : {
         "type" : "string",
         "format" : "com.redhat.refarch.ecom.model.Product"
-      }},
+      }
+    },
     "Result" : {
       "type" : "object",
+      "required" : [ "customerId", "name", "orderNumber", "status", "transactionDate", "transactionNumber" ],
       "properties" : {
         "status" : {
           "type" : "string",
+          "description" : "Status of transaction",
           "enum" : [ "SUCCESS", "FAILURE" ]
         },
         "name" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Name of customer on transaction"
         },
         "customerId" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Persistence ID of customer on transaction"
         },
         "orderNumber" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Order number of transaction processed"
         },
         "transactionDate" : {
           "type" : "integer",
-          "format" : "int64"
+          "format" : "int64",
+          "description" : "Date of transaction"
         },
         "transactionNumber" : {
           "type" : "integer",
-          "format" : "int32"
+          "format" : "int32",
+          "description" : "Persistence ID of transaction processed"
         }
       },
+      "description" : "Represents a transaction result in the system",
       "x-className" : {
         "type" : "string",
         "format" : "com.redhat.refarch.ecom.model.Result"
-      }},
+      }
+    },
     "Response" : {
       "type" : "object",
       "properties" : {
-        "statusInfo" : {
-          "$ref" : "#/definitions/StatusType"
-        },
-        "status" : {
-          "type" : "integer",
-          "format" : "int32"
-        },
         "mediaType" : {
           "$ref" : "#/definitions/MediaType"
         },
         "entity" : {
           "type" : "object"
+        },
+        "length" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "language" : {
+          "$ref" : "#/definitions/Locale"
+        },
+        "location" : {
+          "type" : "string",
+          "format" : "uri"
         },
         "lastModified" : {
           "type" : "string",
@@ -354,12 +471,25 @@
             }
           }
         },
-        "stringHeaders" : {
+        "allowedMethods" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "cookies" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/NewCookie"
+          }
+        },
+        "metadata" : {
           "type" : "object",
           "additionalProperties" : {
             "type" : "array",
             "items" : {
-              "type" : "string"
+              "type" : "object"
             }
           }
         },
@@ -373,44 +503,80 @@
             "$ref" : "#/definitions/Link"
           }
         },
-        "cookies" : {
-          "type" : "object",
-          "additionalProperties" : {
-            "$ref" : "#/definitions/NewCookie"
-          }
-        },
-        "allowedMethods" : {
-          "type" : "array",
-          "uniqueItems" : true,
-          "items" : {
-            "type" : "string"
-          }
-        },
-        "metadata" : {
+        "stringHeaders" : {
           "type" : "object",
           "additionalProperties" : {
             "type" : "array",
             "items" : {
-              "type" : "object"
+              "type" : "string"
             }
           }
         },
-        "length" : {
+        "status" : {
           "type" : "integer",
           "format" : "int32"
         },
-        "language" : {
-          "$ref" : "#/definitions/Locale"
-        },
-        "location" : {
-          "type" : "string",
-          "format" : "uri"
+        "statusInfo" : {
+          "$ref" : "#/definitions/StatusType"
         }
       },
       "x-className" : {
         "type" : "string",
         "format" : "javax.ws.rs.core.Response"
-      }},
+      }
+    },
+    "Transaction" : {
+      "type" : "object",
+      "required" : [ "amount", "billingAddress", "creditCardNumber", "customerId", "customerName", "expMonth", "expYear", "verificationCode" ],
+      "properties" : {
+        "creditCardNumber" : {
+          "type" : "integer",
+          "format" : "int64",
+          "description" : "Credit card number"
+        },
+        "expMonth" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "2-digit month of card expiration"
+        },
+        "expYear" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "4-digit year of card expiration"
+        },
+        "verificationCode" : {
+          "type" : "integer",
+          "format" : "int32",
+          "description" : "3-digit card verification pin"
+        },
+        "billingAddress" : {
+          "type" : "string",
+          "description" : "Card holder's billing address"
+        },
+        "customerId" : {
+          "type" : "string",
+          "description" : "Persistence ID of customer/card holder making transaction"
+        },
+        "customerName" : {
+          "type" : "string",
+          "description" : "Card holder's name"
+        },
+        "orderNumber" : {
+          "type" : "string",
+          "description" : "Persistence ID of order being transacted"
+        },
+        "amount" : {
+          "type" : "number",
+          "format" : "double",
+          "description" : "Amount of transaction to charge to customer"
+        }
+      },
+      "description" : "Represents a purchase transaction to be billed",
+      "x-className" : {
+        "type" : "string",
+        "format" : "com.redhat.refarch.ecom.model.Transaction"
+      }
+    },
     "StatusType" : {
       "type" : "object",
       "properties" : {
@@ -425,25 +591,32 @@
           "type" : "integer",
           "format" : "int32"
         }
-      }    },
+      }
+    },
     "OrderItem" : {
       "type" : "object",
+      "required" : [ "quantity", "sku" ],
       "properties" : {
         "id" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Persistence ID"
         },
         "sku" : {
-          "type" : "string"
+          "type" : "string",
+          "description" : "Product SKU"
         },
         "quantity" : {
           "type" : "integer",
-          "format" : "int32"
+          "format" : "int32",
+          "description" : "Product quantity"
         }
       },
+      "description" : "Represents the quantity of each product requested in an order",
       "x-className" : {
         "type" : "string",
         "format" : "com.redhat.refarch.ecom.model.OrderItem"
-      }    },
+      }
+    },
     "MediaType" : {
       "type" : "object",
       "properties" : {
@@ -502,6 +675,9 @@
             "type" : "string"
           }
         },
+        "type" : {
+          "type" : "string"
+        },
         "params" : {
           "type" : "object",
           "additionalProperties" : {
@@ -511,9 +687,6 @@
         "uri" : {
           "type" : "string",
           "format" : "uri"
-        },
-        "type" : {
-          "type" : "string"
         }
       }
     },
