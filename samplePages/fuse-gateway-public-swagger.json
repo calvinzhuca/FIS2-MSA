@@ -1,0 +1,561 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "Serving downstream product, sales, billing and fulfillment services",
+    "version" : "1.0",
+    "title" : "E-Commerce API Gateway public"
+  },
+  "host" : "fuse-gateway-public-3scale-apicast-staging.middleware.ocp.cloud.lab.eng.bos.redhat.com:439",
+  "tags" : [ {
+    "name" : "products",
+    "description" : "products endpoint"
+  }, {
+    "name" : "products/featured",
+    "description" : "featured products endpoint"
+  }, {
+    "name" : "products/{sku}",
+    "description" : "individual product endpoint"
+  }, {
+    "name" : "products/keywords/{keyword}",
+    "description" : "keyword lookup endpoint"
+  }],
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/products" : {
+      "get" : {
+        "tags" : [ "products" ],
+        "summary" : "list products",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "products fetched",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Product"
+              }
+            }
+          }
+        },
+        "x-camelContextId" : "camel-1",
+        "x-routeId" : "route21"
+      }
+    },
+    "/products/featured" : {
+      "get" : {
+        "tags" : [ "products/featured" ],
+        "summary" : "list featured products",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "featured products fetched",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Product"
+              }
+            }
+          }
+        },
+        "x-camelContextId" : "camel-1",
+        "x-routeId" : "route25"
+      }
+    },
+    "/products/keywords/{keyword}" : {
+      "get" : {
+        "tags" : [ "products/keywords/{keyword}" ],
+        "summary" : "get products by keywords",
+        "consumes" : [ "application/json" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "keyword",
+          "in" : "path",
+          "description" : "keyword to fetch products by",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "products with keyword fetched",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Product"
+              }
+            }
+          }
+        },
+        "x-camelContextId" : "camel-1",
+        "x-routeId" : "route30"
+      }
+    },
+    "/products/{sku}" : {
+      "get" : {
+        "tags" : [ "products/{sku}" ],
+        "summary" : "get product",
+        "consumes" : [ "text/plain" ],
+        "produces" : [ "application/json" ],
+        "parameters" : [ {
+          "name" : "sku",
+          "in" : "path",
+          "description" : "sku of product to fetch",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "product fetched",
+            "schema" : {
+              "$ref" : "#/definitions/Product"
+            }
+          }
+        },
+        "x-camelContextId" : "camel-1",
+        "x-routeId" : "route26"
+      }
+    }
+  },
+  "definitions" : {
+    "Order" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "status" : {
+          "type" : "string",
+          "enum" : [ "Initial", "InProgress", "Canceled", "Paid", "Shipped", "Completed" ]
+        },
+        "transactionNumber" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "transactionDate" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "customerId" : {
+          "type" : "string"
+        },
+        "orderItemIds" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "x-className" : {
+        "type" : "string",
+        "format" : "com.redhat.refarch.ecom.model.Order"
+      }},
+    "Locale" : {
+      "type" : "object",
+      "properties" : {
+        "script" : {
+          "type" : "string"
+        },
+        "country" : {
+          "type" : "string"
+        },
+        "variant" : {
+          "type" : "string"
+        },
+        "extensionKeys" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "unicodeLocaleAttributes" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "unicodeLocaleKeys" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "iso3Language" : {
+          "type" : "string"
+        },
+        "iso3Country" : {
+          "type" : "string"
+        },
+        "displayLanguage" : {
+          "type" : "string"
+        },
+        "displayScript" : {
+          "type" : "string"
+        },
+        "displayCountry" : {
+          "type" : "string"
+        },
+        "displayVariant" : {
+          "type" : "string"
+        },
+        "displayName" : {
+          "type" : "string"
+        },
+        "language" : {
+          "type" : "string"
+        }
+      }},
+    "Customer" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "address" : {
+          "type" : "string"
+        },
+        "telephone" : {
+          "type" : "string"
+        },
+        "email" : {
+          "type" : "string"
+        },
+        "username" : {
+          "type" : "string"
+        },
+        "password" : {
+          "type" : "string"
+        }
+      },
+      "x-className" : {
+        "type" : "string",
+        "format" : "com.redhat.refarch.ecom.model.Customer"
+      }},
+    "Product" : {
+      "type" : "object",
+      "properties" : {
+        "sku" : {
+          "type" : "string"
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "description" : {
+          "type" : "string"
+        },
+        "length" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "width" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "height" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "weight" : {
+          "type" : "number",
+          "format" : "double"
+        },
+        "isFeatured" : {
+          "type" : "boolean",
+          "default" : false
+        },
+        "availability" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "price" : {
+          "type" : "number"
+        },
+        "image" : {
+          "type" : "string"
+        },
+        "keywords" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }
+      },
+      "x-className" : {
+        "type" : "string",
+        "format" : "com.redhat.refarch.ecom.model.Product"
+      }},
+    "Result" : {
+      "type" : "object",
+      "properties" : {
+        "status" : {
+          "type" : "string",
+          "enum" : [ "SUCCESS", "FAILURE" ]
+        },
+        "name" : {
+          "type" : "string"
+        },
+        "customerId" : {
+          "type" : "string"
+        },
+        "orderNumber" : {
+          "type" : "string"
+        },
+        "transactionDate" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "transactionNumber" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "x-className" : {
+        "type" : "string",
+        "format" : "com.redhat.refarch.ecom.model.Result"
+      }},
+    "Response" : {
+      "type" : "object",
+      "properties" : {
+        "statusInfo" : {
+          "$ref" : "#/definitions/StatusType"
+        },
+        "status" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "mediaType" : {
+          "$ref" : "#/definitions/MediaType"
+        },
+        "entity" : {
+          "type" : "object"
+        },
+        "lastModified" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "date" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "headers" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object"
+            }
+          }
+        },
+        "stringHeaders" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        },
+        "entityTag" : {
+          "$ref" : "#/definitions/EntityTag"
+        },
+        "links" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "$ref" : "#/definitions/Link"
+          }
+        },
+        "cookies" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "$ref" : "#/definitions/NewCookie"
+          }
+        },
+        "allowedMethods" : {
+          "type" : "array",
+          "uniqueItems" : true,
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "metadata" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object"
+            }
+          }
+        },
+        "length" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "language" : {
+          "$ref" : "#/definitions/Locale"
+        },
+        "location" : {
+          "type" : "string",
+          "format" : "uri"
+        }
+      },
+      "x-className" : {
+        "type" : "string",
+        "format" : "javax.ws.rs.core.Response"
+      }},
+    "StatusType" : {
+      "type" : "object",
+      "properties" : {
+        "family" : {
+          "type" : "string",
+          "enum" : [ "INFORMATIONAL", "SUCCESSFUL", "REDIRECTION", "CLIENT_ERROR", "SERVER_ERROR", "OTHER" ]
+        },
+        "reasonPhrase" : {
+          "type" : "string"
+        },
+        "statusCode" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      }    },
+    "OrderItem" : {
+      "type" : "object",
+      "properties" : {
+        "id" : {
+          "type" : "string"
+        },
+        "sku" : {
+          "type" : "string"
+        },
+        "quantity" : {
+          "type" : "integer",
+          "format" : "int32"
+        }
+      },
+      "x-className" : {
+        "type" : "string",
+        "format" : "com.redhat.refarch.ecom.model.OrderItem"
+      }    },
+    "MediaType" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "type" : "string"
+        },
+        "subtype" : {
+          "type" : "string"
+        },
+        "parameters" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        },
+        "wildcardType" : {
+          "type" : "boolean",
+          "default" : false
+        },
+        "wildcardSubtype" : {
+          "type" : "boolean",
+          "default" : false
+        }
+      }
+    },
+    "EntityTag" : {
+      "type" : "object",
+      "properties" : {
+        "value" : {
+          "type" : "string"
+        },
+        "weak" : {
+          "type" : "boolean",
+          "default" : false
+        }
+      }
+    },
+    "UriBuilder" : {
+      "type" : "object"
+    },
+    "Link" : {
+      "type" : "object",
+      "properties" : {
+        "title" : {
+          "type" : "string"
+        },
+        "uriBuilder" : {
+          "$ref" : "#/definitions/UriBuilder"
+        },
+        "rel" : {
+          "type" : "string"
+        },
+        "rels" : {
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        },
+        "params" : {
+          "type" : "object",
+          "additionalProperties" : {
+            "type" : "string"
+          }
+        },
+        "uri" : {
+          "type" : "string",
+          "format" : "uri"
+        },
+        "type" : {
+          "type" : "string"
+        }
+      }
+    },
+    "NewCookie" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "value" : {
+          "type" : "string"
+        },
+        "version" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "path" : {
+          "type" : "string"
+        },
+        "domain" : {
+          "type" : "string"
+        },
+        "comment" : {
+          "type" : "string"
+        },
+        "maxAge" : {
+          "type" : "integer",
+          "format" : "int32"
+        },
+        "expiry" : {
+          "type" : "string",
+          "format" : "date-time"
+        },
+        "secure" : {
+          "type" : "boolean",
+          "default" : false
+        },
+        "httpOnly" : {
+          "type" : "boolean",
+          "default" : false
+        }
+      }
+    }
+  }
+}

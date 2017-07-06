@@ -1,0 +1,45 @@
+<h1>Documentation</h1>
+
+<p>Use our live documentation to learn about the Fuse Gateway API</p>
+
+
+{% if current_user %}
+
+      	{% if current_user.username == 'desktop-user' or  current_user.username == 'mobile-user' %}
+          {% active_docs version: "2.0" services: "Fuse-gateway-internal" %}
+
+          <script type="text/javascript">
+            $(function () {
+                window.swaggerUi.options['docExpansion'] = 'none';
+                window.swaggerUi.options['url'] = "https://3scale.middleware.ocp.cloud.lab.eng.bos.redhat.com/swagger/spec/Fuse-gateway-internal.json";
+              window.swaggerUi.load();
+            });
+          </script>
+
+      	{% elsif current_user.username == 'partner-user' %}
+          {% active_docs version: "2.0" services: "Fuse-gateway-partner" %}
+
+          <script type="text/javascript">
+            $(function () {
+                window.swaggerUi.options['docExpansion'] = 'none';
+                window.swaggerUi.options['url'] = "https://3scale.middleware.ocp.cloud.lab.eng.bos.redhat.com/swagger/spec/Fuse-gateway-partner.json";
+              window.swaggerUi.load();
+            });
+          </script>
+      	{% elsif current_user.username == 'public-user' %}
+          {% active_docs version: "2.0" services: "Fuse-gateway-public" %}
+
+          <script type="text/javascript">
+            $(function () {
+                window.swaggerUi.options['docExpansion'] = 'none';
+                window.swaggerUi.options['url'] = "https://3scale.middleware.ocp.cloud.lab.eng.bos.redhat.com/swagger/spec/Fuse-gateway-public.json";
+              window.swaggerUi.load();
+            });
+          </script>
+		{% endif %}
+
+{% else %}
+	      <h4>Only after sign in you can see the ActiveDocs. Visitor, please use public-user/password to sign in for trail.</h4>
+
+{% endif %}
+
